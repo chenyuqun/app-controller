@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zizaike.app.api.service.SignService;
+import com.zizaike.app.api.sign.SignValid;
 import com.zizaike.core.common.PropertyConfigurer;
 import com.zizaike.core.common.util.sign.SignUtil;
 import com.zizaike.core.framework.exception.ZZKServiceException;
@@ -38,24 +39,28 @@ import com.zizaike.core.framework.exception.sign.ApiSignParameterMissedException
 @Service
 public class SignServiceImpl implements SignService {
     private static final Logger LOG = LoggerFactory.getLogger(SignServiceImpl.class);
+    private static final String VERIFICATION_SIGN  = "verificationSign";
     @Autowired
     PropertyConfigurer propertyConfigurge;
     @Override
     public void signVerification(Map params) throws ZZKServiceException{
-       String apiKeySys=  propertyConfigurge.getProperty(SignUtil.API_KEY);
-       String apiKeyParam = (String) params.get(SignUtil.API_KEY);
-       String apiSecret = propertyConfigurge.getProperty(SignUtil.API_SECRET);
-       String apiSign = (String) params.get(SignUtil.API_SIGN);
-       if(StringUtils.isBlank(apiKeyParam)||StringUtils.isBlank(apiSign)){
-           throw new ApiSignParameterMissedException();
-       }
-       if(!apiKeySys.equals(apiKeyParam)){
-           throw new ApiSignKeyNotEqulesException();
-       }
-       if (!apiSign.equals(SignUtil.getSign(params,apiSecret))) {
-           LOG.error(" api sign error, apiKey={0}, apiSign={1} ", apiKeyParam, apiSign);
-           throw new ApiSignErrorException(); 
-       }
+        String verificationSign = propertyConfigurge.getProperty(VERIFICATION_SIGN);
+        if(verificationSign.equals("true")){
+            String apiKeySys=  propertyConfigurge.getProperty(SignUtil.API_KEY);
+            String apiKeyParam = (String) params.get(SignUtil.API_KEY);
+            String apiSecret = propertyConfigurge.getProperty(SignUtil.API_SECRET);
+            String apiSign = (String) params.get(SignUtil.API_SIGN);
+            if(StringUtils.isBlank(apiKeyParam)||StringUtils.isBlank(apiSign)){
+                throw new ApiSignParameterMissedException();
+            }
+            if(!apiKeySys.equals(apiKeyParam)){
+                throw new ApiSignKeyNotEqulesException();
+            }
+            if (!apiSign.equals(SignUtil.getSign(params,apiSecret))) {
+                LOG.error(" api sign error, apiKey={0}, apiSign={1} ", apiKeyParam, apiSign);
+                throw new ApiSignErrorException(); 
+            }
+        }
     }
 
 }

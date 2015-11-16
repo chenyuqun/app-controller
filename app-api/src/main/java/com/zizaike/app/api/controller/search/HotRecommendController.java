@@ -1,7 +1,6 @@
 package com.zizaike.app.api.controller.search;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.app.api.BaseAjaxController;
 import com.zizaike.app.api.service.SignService;
+import com.zizaike.app.api.sign.SignValid;
 import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.ZZKServiceException;
 import com.zizaike.is.redis.HotRecommendRedisService;
@@ -26,11 +26,12 @@ public class HotRecommendController extends BaseAjaxController {
 
     @RequestMapping(value = "hot", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult getHotRecommend(@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException {
-        Map map = new HashMap();
-        map.put("apiSign", apiSign);
-        map.put("apiKey", apiKey);
-        signService.signVerification(map);
+    @SignValid(ingore={"request"})
+    public ResponseResult getHotRecommend(HttpServletRequest request ,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException {
+//        Map map = new HashMap();
+//        map.put("apiSign", apiSign);
+//        map.put("apiKey", apiKey);
+//        signService.signVerification(map);
         ResponseResult result = new ResponseResult();
         result.setInfo(hotRecommendRedisService.qury());
         return result;

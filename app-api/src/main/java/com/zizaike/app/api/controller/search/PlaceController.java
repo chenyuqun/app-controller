@@ -9,6 +9,8 @@
 package com.zizaike.app.api.controller.search;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.app.api.BaseAjaxController;
+import com.zizaike.app.api.service.SignService;
+import com.zizaike.app.api.sign.SignValid;
 import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
@@ -43,13 +47,12 @@ public class PlaceController extends BaseAjaxController {
     @Autowired
     private PlaceSolrService placeSolrService;
 
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult getAllAddress(@RequestParam("words") String words,@RequestParam("destId") String destId,@RequestParam("locid") String locid) throws ZZKServiceException, UnsupportedEncodingException {
-        ResponseResult result = new ResponseResult();
+    @SignValid(ingore = {})
+    public ResponseResult getAllAddress(@RequestParam("words") String words ,@RequestParam("destId") String destId,@RequestParam("locid") String locid,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException, UnsupportedEncodingException {
+       
         Pattern pattern = Pattern.compile("[0-9]*");
-        words = new String(words.getBytes("ISO-8859-1"),"UTF-8");
         Matcher isNum = pattern.matcher(destId);
         if (!isNum.matches()) {
             throw new IllegalParamterException("destId type error");
@@ -58,6 +61,7 @@ public class PlaceController extends BaseAjaxController {
         if (!isNum2.matches()) {
             throw new IllegalParamterException("locid type error");
         }
+        ResponseResult result = new ResponseResult();
         result.setInfo(placeSolrService.queryPlaceByWordsAndLoc(words, Integer.parseInt(destId),
                 Integer.parseInt(locid)));
         return result;

@@ -1,15 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.zizaike</groupId>
-    <artifactId>zizaike-app</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>com.zizaike.app</groupId>
-  <artifactId>app-api</artifactId>
-  <packaging>war</packaging>
-  <name>app-api</name>
-  <description>app-api服务</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zizaike</groupId>
+		<artifactId>zizaike-app</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>com.zizaike.app</groupId>
+	<artifactId>app-api</artifactId>
+	<packaging>war</packaging>
+	<name>app-api</name>
+	<description>app-api服务</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<build.timestamp>${maven.build.timestamp}</build.timestamp>
@@ -47,8 +48,8 @@
 		</plugins>
 		<!-- 通过profile决定env, 根据env来试用不同的过滤文件来处理resources中的properties文件 -->
 		<filters>
-            <filter>src/main/resources/${env}</filter>
-        </filters> 
+			<filter>src/main/resources/${env}</filter>
+		</filters>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -72,7 +73,7 @@
 			</properties>
 		</profile>
 		<profile>
-		<!-- 正式环境 -->
+			<!-- 正式环境 -->
 			<id>test</id>
 			<properties>
 				<env>logback.properties</env>
@@ -93,7 +94,7 @@
 			</properties>
 		</profile>
 	</profiles>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.zizaike</groupId>
@@ -175,6 +176,14 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc-portlet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
 		</dependency>
 		<!-- spring end -->
 

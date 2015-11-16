@@ -8,7 +8,7 @@
 	<name>zizaike-app</name>
 	<description>app 相关</description>
 	<modules>
-	<module>app-api</module>
+		<module>app-api</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -260,7 +260,11 @@
 				<artifactId>spring-webmvc-portlet</artifactId>
 				<version>${org.springframework.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aspects</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
@@ -347,6 +351,11 @@
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
+				<version>1.7.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
 				<version>1.7.2</version>
 			</dependency>
 			<dependency>
