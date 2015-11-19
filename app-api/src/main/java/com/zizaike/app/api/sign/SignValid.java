@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
  * @see        
  */
 
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD , ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SignValid {
     /**
@@ -35,6 +35,6 @@ public @interface SignValid {
      * @return  
      * @since JDK 1.7
      */
-    String[] ingore();
+    String[] ingore() default "";
 }
   
