@@ -9,6 +9,8 @@
 package com.zizaike.app.api.controller.search;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.app.api.BaseAjaxController;
+import com.zizaike.app.api.service.SignService;
 import com.zizaike.app.api.sign.SignValid;
 import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.IllegalParamterException;
@@ -28,32 +31,38 @@ import com.zizaike.is.solr.PlaceSolrService;
 
 /**
  * ClassName:PlaceController <br/>
- * Function: POI数据查询. <br/>
+ * Function: 地址关联查询. <br/>
+ * Reason: 地址关联查询. <br/>
  * Date: 2015年11月5日 下午4:35:49 <br/>
  * 
- * @author snow.zhang
+ * @author alex
  * @version
  * @since JDK 1.7
  * @see
  */
 
 @Controller
-@RequestMapping("/search/place")
-public class PlaceController extends BaseAjaxController {
+@RequestMapping("/search/relate")
+public class RelateController extends BaseAjaxController {
     @Autowired
     private PlaceSolrService placeSolrService;
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     @SignValid(ingore = {})
-    public ResponseResult getPlace(@RequestParam("locid") String locid,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException, UnsupportedEncodingException {
+    public ResponseResult getAllAddress(@RequestParam("words") String words ,@RequestParam("destId") String destId,@RequestParam("locid") String locid,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException, UnsupportedEncodingException {
+       
         Pattern pattern = Pattern.compile("[0-9]*");
-        Matcher isNum = pattern.matcher(locid);
+        Matcher isNum = pattern.matcher(destId);
         if (!isNum.matches()) {
+            throw new IllegalParamterException("destId type error");
+        }
+        Matcher isNum2 = pattern.matcher(locid);
+        if (!isNum2.matches()) {
             throw new IllegalParamterException("locid type error");
         }
-        Integer locaidInt = Integer.parseInt(locid);
         ResponseResult result = new ResponseResult();
-        result.setInfo(placeSolrService.queryPlaceByLocId(locaidInt));
+        result.setInfo(placeSolrService.queryPlaceByWordsAndLoc(words, Integer.parseInt(destId),
+                Integer.parseInt(locid)));
         return result;
     }
 }
