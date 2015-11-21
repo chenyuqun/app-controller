@@ -69,18 +69,20 @@ public class SignAdivce {
             return;
         }
         String ignoreParam = propertyConfigurge.getProperty(IGNORE_PARAM);
-        String[] ignore = null;
+        String[] ingoreProperties = null;
         if (ignoreParam != null) {
-            ignore = ignoreParam.split(",");
+            ingoreProperties = ignoreParam.split(",");
         }
-
         Object[] args = joinPoint.getArgs();
         MethodSignature methodName = (MethodSignature) joinPoint.getSignature();
         Method method = methodName.getMethod();
         String[] ingore = method.getAnnotation(SignValid.class).ingore();
-        List<String> ingoreList = Arrays.asList(ignore);
-        List<String> ingoreListRequest = Arrays.asList(ingore);
-        ingoreList.addAll(ingoreListRequest);
+        List<String> ingoreList = Arrays.asList(ingoreProperties);
+        List<String> ingoreListRequest =  Arrays.asList(ingore);
+        //忽略默认值
+        if(!(ingoreListRequest.size()==1 && ingoreListRequest.get(0).equals(""))){
+            ingoreList.addAll(ingoreListRequest);
+        }
         // 得到输入参数列表
         LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
         String[] params = u.getParameterNames(method);
