@@ -39,13 +39,10 @@ import com.zizaike.core.framework.exception.sign.ApiSignParameterMissedException
 @Service
 public class SignServiceImpl implements SignService {
     private static final Logger LOG = LoggerFactory.getLogger(SignServiceImpl.class);
-    private static final String VERIFICATION_SIGN  = "verificationSign";
     @Autowired
     PropertyConfigurer propertyConfigurge;
     @Override
     public void signVerification(Map params) throws ZZKServiceException{
-        String verificationSign = propertyConfigurge.getProperty(VERIFICATION_SIGN);
-        if(verificationSign.equals("true")){
             String apiKeySys=  propertyConfigurge.getProperty(SignUtil.API_KEY);
             String apiKeyParam = (String) params.get(SignUtil.API_KEY);
             String apiSecret = propertyConfigurge.getProperty(SignUtil.API_SECRET);
@@ -60,7 +57,6 @@ public class SignServiceImpl implements SignService {
                 LOG.error(" api sign error, apiKey={0}, apiSign={1} ", apiKeyParam, apiSign);
                 throw new ApiSignErrorException(); 
             }
-        }
     }
 
 }

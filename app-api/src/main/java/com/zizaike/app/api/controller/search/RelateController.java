@@ -9,8 +9,6 @@
 package com.zizaike.app.api.controller.search;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zizaike.app.api.BaseAjaxController;
-import com.zizaike.app.api.service.SignService;
 import com.zizaike.app.api.sign.SignValid;
 import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.IllegalParamterException;

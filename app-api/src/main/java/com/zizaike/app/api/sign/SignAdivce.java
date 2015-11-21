@@ -10,6 +10,7 @@
 package com.zizaike.app.api.sign;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 
 import com.zizaike.app.api.service.SignService;
+import com.zizaike.core.common.PropertyConfigurer;
 
 /**
  * ClassName:SignAdivce <br/>
@@ -39,39 +41,55 @@ import com.zizaike.app.api.service.SignService;
  */
 @Component
 @Aspect
-public class SignAdivce  {
+public class SignAdivce {
     @Autowired
     SignService signService;
-    
+    @Autowired
+    PropertyConfigurer propertyConfigurge;
+    private static final String VERIFICATION_SIGN = "verificationSign";
+    private static final String IGNORE_PARAM = "ignoreParam";
+
     @Pointcut("execution(public * com.zizaike.app.api.controller..*.*.*(..))")
     public void signValit() {
     }
+
     /**
      * 
-     * before:before 验签. <br/>  
-     *  
-     * @author snow.zhang  
+     * before:before 验签. <br/>
+     * 
+     * @author snow.zhang
      * @param joinPoint
-     * @throws Throwable  
+     * @throws Throwable
      * @since JDK 1.7
      */
     @Before("signValit()")
     public void before(JoinPoint joinPoint) throws Throwable {
+        String verificationSign = propertyConfigurge.getProperty(VERIFICATION_SIGN);
+        if (!verificationSign.equals("true")) {
+            return;
+        }
+        String ignoreParam = propertyConfigurge.getProperty(IGNORE_PARAM);
+        String[] ignore = null;
+        if (ignoreParam != null) {
+            ignore = ignoreParam.split(",");
+        }
+
         Object[] args = joinPoint.getArgs();
-         MethodSignature methodName = (MethodSignature) joinPoint.getSignature();
-         Method method = methodName.getMethod();
-             String[] ingore =  method.getAnnotation(SignValid.class).ingore();
-             List<String> ingoreList = Arrays.asList(ingore);
-        //得到输入参数列表
-        LocalVariableTableParameterNameDiscoverer u =   
-                     new LocalVariableTableParameterNameDiscoverer();  
-             String[] params = u.getParameterNames(method);
-             Map map =new HashMap();
-             for (int i = 0; i < params.length; i++) {
-                if(!ingoreList.contains(params[i])){
-                    map.put(params[i], args[i]);
-                }
+        MethodSignature methodName = (MethodSignature) joinPoint.getSignature();
+        Method method = methodName.getMethod();
+        String[] ingore = method.getAnnotation(SignValid.class).ingore();
+        List<String> ingoreList = Arrays.asList(ignore);
+        List<String> ingoreListRequest = Arrays.asList(ingore);
+        ingoreList.addAll(ingoreListRequest);
+        // 得到输入参数列表
+        LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
+        String[] params = u.getParameterNames(method);
+        Map map = new HashMap();
+        for (int i = 0; i < params.length; i++) {
+            if (!ingoreList.contains(params[i])) {
+                map.put(params[i], args[i]);
             }
-             signService.signVerification(map);
+        }
+        signService.signVerification(map);
     }
 }
