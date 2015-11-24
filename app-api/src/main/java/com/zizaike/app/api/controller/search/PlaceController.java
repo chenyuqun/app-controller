@@ -45,7 +45,7 @@ public class PlaceController extends BaseAjaxController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     @SignValid(ingore = {})
-    public ResponseResult getPlace(@RequestParam("locid") String locid,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException, UnsupportedEncodingException {
+    public ResponseResult getPlace(@RequestParam("locid") String locid,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey ,@RequestParam("multilang") Integer multilang) throws ZZKServiceException, UnsupportedEncodingException {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(locid);
         if (!isNum.matches()) {

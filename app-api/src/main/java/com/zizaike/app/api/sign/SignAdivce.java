@@ -10,7 +10,6 @@
 package com.zizaike.app.api.sign;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +29,7 @@ import com.zizaike.core.common.PropertyConfigurer;
 
 /**
  * ClassName:SignAdivce <br/>
- * Function: TODO ADD FUNCTION. <br/>
- * Reason: TODO ADD REASON. <br/>
+ * Function: 签到切面. <br/>
  * Date: 2015年11月16日 下午4:54:27 <br/>
  * 
  * @author snow.zhang
