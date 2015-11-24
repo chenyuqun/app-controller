@@ -48,7 +48,8 @@ public class RoomController extends BaseAjaxController {
     @ResponseBody
     @SignValid(ingore = {})
     public ResponseResult getSearchResult(@RequestParam("keyWords") String keyWords ,@RequestParam("destId") String destId,@RequestParam("searchid") String searchid,@RequestParam("checkInDate") String checkInDate,
-            @RequestParam("checkOutDate") String checkOutDate,@RequestParam("searchType") SearchType searchType,@RequestParam("page") String page,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException, UnsupportedEncodingException {
+            @RequestParam("checkOutDate") String checkOutDate,@RequestParam("searchType") SearchType searchType,@RequestParam("page") String page,@RequestParam("price") String price,@RequestParam("service") String service,
+            @RequestParam("roomModel") String roomModel,@RequestParam("order") String order,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException, UnsupportedEncodingException {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(destId);
         keyWords = new String(keyWords.getBytes("ISO-8859-1"),"UTF-8");
@@ -63,6 +64,14 @@ public class RoomController extends BaseAjaxController {
         if (!isNum3.matches()) {
             throw new IllegalParamterException("page type error");
         }
+        Matcher isNum4 = pattern.matcher(roomModel);
+        if (!isNum4.matches()) {
+            throw new IllegalParamterException("roomModel type error");
+        }
+        Matcher isNum5 = pattern.matcher(order);
+        if (!isNum5.matches()) {
+            throw new IllegalParamterException("order type error");
+        }
         SearchWordsVo searchWordsVo=new SearchWordsVo();
         searchWordsVo.setCheckInDate(checkInDate);
         searchWordsVo.setCheckOutDate(checkOutDate);
@@ -75,6 +84,10 @@ public class RoomController extends BaseAjaxController {
         searchWordsVo.setPage(Integer.parseInt(page));
         searchWordsVo.setSearchid(Integer.parseInt(searchid));
         searchWordsVo.setSearchType(searchType);
+        searchWordsVo.setRoomModel(Integer.parseInt(roomModel));
+        searchWordsVo.setService(service);
+        searchWordsVo.setPrice(price);
+        searchWordsVo.setOrder(Integer.parseInt(order));
         ResponseResult result = new ResponseResult();
         result.setInfo(roomSolrService.searchSolr(searchWordsVo));
         return result;
