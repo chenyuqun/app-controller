@@ -30,7 +30,7 @@ public class RecommendController extends BaseAjaxController {
     @RequestMapping(value = "hot", method = RequestMethod.GET)
     @ResponseBody
     @SignValid(ingore={"request"})
-    public ResponseResult getHotRecommend(HttpServletRequest request ,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException {
+    public ResponseResult getHotRecommend(HttpServletRequest request ,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey ,@RequestParam("multilang") Integer multilang) throws ZZKServiceException {
         ResponseResult result = new ResponseResult();
         result.setInfo(hotRecommendRedisService.qury());
         return result;
@@ -49,7 +49,7 @@ public class RecommendController extends BaseAjaxController {
     @RequestMapping(value = "area_recommend", method = RequestMethod.GET)
     @ResponseBody
     @SignValid
-    public ResponseResult getLocAndHotRecommend(@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException {
+    public ResponseResult getLocAndHotRecommend(@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang) throws ZZKServiceException {
         ResponseResult result = new ResponseResult();
         result.setInfo(recommendAreaRedisService.query());
         return result;

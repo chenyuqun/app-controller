@@ -31,7 +31,7 @@ public class UserController extends BaseAjaxController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     @SignValid(ingore = {"id"})
-    public ResponseResult getAllAddress(@PathVariable String id,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException {
+    public ResponseResult getAllAddress(@PathVariable String id,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey ,@RequestParam("multilang") Integer multilang) throws ZZKServiceException {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(id);
         if (!isNum.matches()) {

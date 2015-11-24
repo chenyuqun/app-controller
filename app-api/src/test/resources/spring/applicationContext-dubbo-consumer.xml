@@ -18,4 +18,6 @@
     <dubbo:reference id="userSolrService" interface="com.zizaike.is.solr.UserSolrService" version="1.0.0" group="${dubbo.group}"  check="false"/>
     <dubbo:reference id="hotRedisRecommendService" interface="com.zizaike.is.redis.HotRecommendRedisService" version="1.0.0" group="${dubbo.group}"  check="false"/>
     <dubbo:reference id="placeSolrService" interface="com.zizaike.is.solr.PlaceSolrService" version="1.0.0" group="${dubbo.group}"  check="false"/>
+ 	<!-- 翻译服务 -->
+    <dubbo:reference id="hanLPService" interface="com.zizaike.is.common.HanLPService" version="1.0.0" group="${dubbo.group}"  check="false"/>
 </beans>
