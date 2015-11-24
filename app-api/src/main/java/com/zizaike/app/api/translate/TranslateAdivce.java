@@ -79,15 +79,20 @@ public class TranslateAdivce {
 
     public Object translate(Object obj,Integer multilang) {
         String str = JSON.toJSONString(obj);
-        System.err.println(str);
         String returnStr = null;
         if(multilang == CountryType.TWD.getValue()){
             returnStr = hanLPService.convertToTraditionalChinese((String) str);
         }else if(multilang == CountryType.CNY.getValue()){
             returnStr = hanLPService.convertToSimplifiedChinese((String) str);
         }
-        JSONObject jsonobject = JSONObject.parseObject(returnStr);
-        return jsonobject;
+        Object object = null;
+        try{
+            object =   JSON.parseObject(returnStr);
+        }catch(Exception e){
+            object =   JSON.parseArray(returnStr);
+        }
+
+        return object;
     }
     /**
      * public void translateTest(Object obj) throws Exception { if(obj==null){ return ; } Class<? extends Object> clazz
