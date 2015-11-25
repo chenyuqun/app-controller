@@ -49,15 +49,15 @@ public class RoomController extends BaseAjaxController {
     @SignValid(ingore = {})
     public ResponseResult getSearchResult(@RequestParam("keyWords") String keyWords ,@RequestParam("destId") String destId,@RequestParam("searchid") String searchid,@RequestParam("checkInDate") String checkInDate,
             @RequestParam("checkOutDate") String checkOutDate,@RequestParam("searchType") SearchType searchType,@RequestParam("page") String page,@RequestParam("price") String price,@RequestParam("service") String service,
-            @RequestParam("roomModel") String roomModel,@RequestParam("order") String order,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey) throws ZZKServiceException, UnsupportedEncodingException {
+            @RequestParam("roomModel") String roomModel,@RequestParam("order") String order,@RequestParam("multiprice") String multiprice,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang) throws ZZKServiceException, UnsupportedEncodingException {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(destId);
         keyWords = new String(keyWords.getBytes("ISO-8859-1"),"UTF-8");
-        if (!isNum.matches()) {
+        if (!isNum.matches()&&destId!="") {
             throw new IllegalParamterException("destId type error");
         }
         Matcher isNum2 = pattern.matcher(searchid);
-        if (!isNum2.matches()) {
+        if (!isNum2.matches()&&searchid!="") {
             throw new IllegalParamterException("searchid type error");
         }
         Matcher isNum3 = pattern.matcher(page);
@@ -65,11 +65,11 @@ public class RoomController extends BaseAjaxController {
             throw new IllegalParamterException("page type error");
         }
         Matcher isNum4 = pattern.matcher(roomModel);
-        if (!isNum4.matches()) {
+        if (!isNum4.matches()&&roomModel!="") {
             throw new IllegalParamterException("roomModel type error");
         }
         Matcher isNum5 = pattern.matcher(order);
-        if (!isNum5.matches()) {
+        if (!isNum5.matches()&&order!="") {
             throw new IllegalParamterException("order type error");
         }
         SearchWordsVo searchWordsVo=new SearchWordsVo();
@@ -81,13 +81,26 @@ public class RoomController extends BaseAjaxController {
         if(keyWords!=null&&keyWords!=""){
             searchWordsVo.setKeyWords(keyWords);
         }
-        searchWordsVo.setPage(Integer.parseInt(page));
-        searchWordsVo.setSearchid(Integer.parseInt(searchid));
+        if(page!=null||searchid!=""){
+            searchWordsVo.setPage(1);
+        }else{
+            searchWordsVo.setPage(Integer.parseInt(page));
+        }
+        if(searchid!=null&&searchid!=""){
+            searchWordsVo.setSearchid(Integer.parseInt(searchid));
+        }
         searchWordsVo.setSearchType(searchType);
-        searchWordsVo.setRoomModel(Integer.parseInt(roomModel));
+        if(roomModel!=null&&roomModel!=""){
+            searchWordsVo.setRoomModel(Integer.parseInt(roomModel));
+        }
         searchWordsVo.setService(service);
         searchWordsVo.setPrice(price);
-        searchWordsVo.setOrder(Integer.parseInt(order));
+        if(order!=null&&order!=""){
+           searchWordsVo.setOrder(Integer.parseInt(order));
+        }
+        if(multiprice!=null&&multiprice!=""){
+            searchWordsVo.setMultiprice(Integer.parseInt(multiprice));
+        }
         ResponseResult result = new ResponseResult();
         result.setInfo(roomSolrService.searchSolr(searchWordsVo));
         return result;
