@@ -82,9 +82,9 @@ public class RoomController extends BaseAjaxController {
             searchWordsVo.setKeyWords(keyWords);
         }
         if(page!=null||searchid!=""){
-            searchWordsVo.setPage(1);
-        }else{
             searchWordsVo.setPage(Integer.parseInt(page));
+        }else{
+            searchWordsVo.setPage(1);
         }
         if(searchid!=null&&searchid!=""){
             searchWordsVo.setSearchid(Integer.parseInt(searchid));
