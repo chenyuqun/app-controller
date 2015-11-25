@@ -87,7 +87,7 @@ public class SignAdivce {
         Map map = new HashMap();
         for (int i = 0; i < params.length; i++) {
             if (!ingoreList.contains(params[i])) {
-                map.put(params[i], args[i]);
+                map.put(params[i], args[i].toString());
             }
         }
         signService.signVerification(map);
