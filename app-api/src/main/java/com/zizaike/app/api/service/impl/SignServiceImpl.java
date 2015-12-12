@@ -54,7 +54,7 @@ public class SignServiceImpl implements SignService {
                 throw new ApiSignKeyNotEqulesException();
             }
             if (!apiSign.equals(SignUtil.getSign(params,apiSecret))) {
-                LOG.error(" api sign error, apiKey={0}, apiSign={1} ", apiKeyParam, apiSign);
+                LOG.error(" api sign error, apiKey={}, apiSign={} ", apiKeyParam, apiSign);
                 throw new ApiSignErrorException(); 
             }
     }
