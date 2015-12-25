@@ -52,7 +52,6 @@ public class RoomController extends BaseAjaxController {
             @RequestParam("roomModel") String roomModel,@RequestParam("order") String order,@RequestParam("multiprice") String multiprice,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang) throws ZZKServiceException, UnsupportedEncodingException {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(destId);
-        //keyWords = new String(keyWords.getBytes("ISO-8859-1"),"UTF-8");
         if (!isNum.matches()&&destId!="") {
             throw new IllegalParamterException("destId type error");
         }
