@@ -97,8 +97,8 @@ public class RoomController extends BaseAjaxController {
         if(order!=null&&order!=""){
            searchWordsVo.setOrder(Integer.parseInt(order));
         }
-        if(multiprice!=null&&multiprice!=""){
-            searchWordsVo.setMultiprice(Integer.parseInt(multiprice));
+        if(multilang!=null){
+            searchWordsVo.setMultilang(multilang);
         }
         ResponseResult result = new ResponseResult();
         result.setInfo(roomSolrService.searchSolr(searchWordsVo));
