@@ -26,7 +26,7 @@
 		<maven.findbugs.version>2.5.2</maven.findbugs.version>
 
 		<zizaike.core.version>1.0.3-RELEASE</zizaike.core.version>
-		<zizaike.entity.version>1.0.5-SNAPSHOT</zizaike.entity.version>
+		<zizaike.entity.version>1.0.5-RELEASE</zizaike.entity.version>
 		<zizaike.is.version>1.0.4-RELEASE</zizaike.is.version>
 		<!-- Spring -->
 		<org.springframework.version>4.0.2.RELEASE</org.springframework.version>
