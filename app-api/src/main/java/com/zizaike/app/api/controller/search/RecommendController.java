@@ -54,4 +54,21 @@ public class RecommendController extends BaseAjaxController {
         result.setInfo(recommendAreaRedisService.query());
         return result;
     }
+
+    /**
+     *
+     * getLocAndHotRecommendByDest:根据目的地获得地址与热推. <br/>
+     * @author alex
+     * @return
+     * @throws ZZKServiceException
+     * @since JDK 1.7
+     */
+    @RequestMapping(value = "area_recommend_bydest", method = RequestMethod.GET)
+    @ResponseBody
+    @SignValid
+    public ResponseResult getLocAndHotRecommendByDest(@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang,@RequestParam("destId") Integer destId) throws ZZKServiceException {
+        ResponseResult result = new ResponseResult();
+        result.setInfo(recommendAreaRedisService.queryByDest(destId));
+        return result;
+    }
 }
