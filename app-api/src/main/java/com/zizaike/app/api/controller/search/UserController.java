@@ -19,6 +19,10 @@ import com.zizaike.app.api.sign.SignValid;
 import com.zizaike.core.bean.ResponseResult;
 import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.base.ChannelType;
+import com.zizaike.entity.solr.BNBServiceType;
+import com.zizaike.entity.solr.SearchType;
+import com.zizaike.entity.solr.ServiceSearchVo;
 import com.zizaike.is.solr.UserSolrService;
 
 @Controller
@@ -43,6 +47,32 @@ public class UserController extends BaseAjaxController {
         signService.signVerification(map);
         ResponseResult result = new ResponseResult();
         result.setInfo(userSolrService.queryUserById(Integer.parseInt(id)));
+        return result;
+    }
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult getServiceSearch(@RequestParam("destId") String destId,@RequestParam("searchid") String searchid,@RequestParam("searchType") SearchType searchType,
+            @RequestParam("serviceType") BNBServiceType serviceType, @RequestParam("page") String page,
+            @RequestParam("multiprice") String multiprice,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang) throws ZZKServiceException {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        if (!pattern.matcher(destId).matches()&&destId!="") {
+            throw new IllegalParamterException("destId type error");
+        }
+        if (!pattern.matcher(searchid).matches()&&searchid!="") {
+            throw new IllegalParamterException("searchid type error");
+        }
+        if (!pattern.matcher(page).matches()) {
+            throw new IllegalParamterException("page type error");
+        }
+        ServiceSearchVo searchVo = new ServiceSearchVo();
+        searchVo.setChannel(ChannelType.APP);
+        searchVo.setDestId(Integer.parseInt(destId));
+        searchVo.setPage(Integer.parseInt(page));
+        searchVo.setSearchid(Integer.parseInt(searchid));
+        searchVo.setSearchType(searchType);
+        searchVo.setServiceType(serviceType);
+        ResponseResult result = new ResponseResult();
+        result.setInfo(userSolrService.serviceQuery(searchVo));
         return result;
     }
 }
