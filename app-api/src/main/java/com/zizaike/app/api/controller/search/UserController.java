@@ -51,7 +51,7 @@ public class UserController extends BaseAjaxController {
     }
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult getServiceSearch(@RequestParam("destId") String destId,@RequestParam("searchid") String searchid,@RequestParam("searchType") SearchType searchType,
+    public ResponseResult getServiceSearch(@RequestParam("destId") String destId,@RequestParam("userId") Integer userId,@RequestParam("searchid") String searchid,@RequestParam("searchType") SearchType searchType,
             @RequestParam("serviceType") BNBServiceType serviceType, @RequestParam("page") String page,
             @RequestParam("multiprice") String multiprice,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang) throws ZZKServiceException {
         Pattern pattern = Pattern.compile("[0-9]*");
@@ -71,6 +71,7 @@ public class UserController extends BaseAjaxController {
         searchVo.setSearchid(Integer.parseInt(searchid));
         searchVo.setSearchType(searchType);
         searchVo.setServiceType(serviceType);
+        searchVo.setUserId(userId);
         ResponseResult result = new ResponseResult();
         result.setInfo(userSolrService.serviceQuery(searchVo));
         return result;
