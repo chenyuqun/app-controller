@@ -51,9 +51,10 @@ public class UserController extends BaseAjaxController {
     }
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult getServiceSearch(@RequestParam("destId") String destId,@RequestParam("searchid") String searchid,@RequestParam("searchType") SearchType searchType,
-            @RequestParam("serviceType") BNBServiceType serviceType, @RequestParam("page") String page,
-            @RequestParam("multiprice") String multiprice,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang) throws ZZKServiceException {
+    public ResponseResult getServiceSearch(@RequestParam(value="destId",required=true) String destId,@RequestParam(value="userId",required=false) Integer userId,
+            @RequestParam(value="searchid",required=true) String searchid,@RequestParam(value="searchType",required=false) SearchType searchType,
+            @RequestParam(value="serviceType",required=true) BNBServiceType serviceType, @RequestParam(value="page",required=false) String page,
+            @RequestParam("multiprice") Integer multiprice,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang) throws ZZKServiceException {
         Pattern pattern = Pattern.compile("[0-9]*");
         if (!pattern.matcher(destId).matches()&&destId!="") {
             throw new IllegalParamterException("destId type error");
@@ -64,6 +65,9 @@ public class UserController extends BaseAjaxController {
         if (!pattern.matcher(page).matches()) {
             throw new IllegalParamterException("page type error");
         }
+        if(serviceType==null){
+            throw new IllegalParamterException("searchType is null");
+        }
         ServiceSearchVo searchVo = new ServiceSearchVo();
         searchVo.setChannel(ChannelType.APP);
         searchVo.setDestId(Integer.parseInt(destId));
@@ -71,6 +75,10 @@ public class UserController extends BaseAjaxController {
         searchVo.setSearchid(Integer.parseInt(searchid));
         searchVo.setSearchType(searchType);
         searchVo.setServiceType(serviceType);
+        if(userId!=null){
+            searchVo.setUserId(userId);
+        }
+        searchVo.setMultiprice(multiprice);
         ResponseResult result = new ResponseResult();
         result.setInfo(userSolrService.serviceQuery(searchVo));
         return result;

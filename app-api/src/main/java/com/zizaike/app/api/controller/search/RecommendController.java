@@ -1,5 +1,7 @@
 package com.zizaike.app.api.controller.search;
 
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,15 @@ import com.zizaike.app.api.BaseAjaxController;
 import com.zizaike.app.api.service.SignService;
 import com.zizaike.app.api.sign.SignValid;
 import com.zizaike.core.bean.ResponseResult;
+import com.zizaike.core.framework.exception.IllegalParamterException;
 import com.zizaike.core.framework.exception.ZZKServiceException;
+import com.zizaike.entity.base.ChannelType;
+import com.zizaike.entity.solr.BNBServiceType;
+import com.zizaike.entity.solr.SearchType;
+import com.zizaike.entity.solr.ServiceSearchVo;
 import com.zizaike.is.redis.HotRecommendRedisService;
 import com.zizaike.is.redis.RecommendAreaRedisService;
+import com.zizaike.is.solr.UserSolrService;
 
 @Controller
 @RequestMapping("/search/recommend")
@@ -26,6 +34,8 @@ public class RecommendController extends BaseAjaxController {
     private SignService signService;
     @Autowired
     private RecommendAreaRedisService recommendAreaRedisService;
+    @Autowired
+    private UserSolrService userSolrService;
 
     @RequestMapping(value = "hot", method = RequestMethod.GET)
     @ResponseBody
@@ -69,6 +79,43 @@ public class RecommendController extends BaseAjaxController {
     public ResponseResult getLocAndHotRecommendByDest(@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang,@RequestParam("destId") Integer destId) throws ZZKServiceException {
         ResponseResult result = new ResponseResult();
         result.setInfo(recommendAreaRedisService.queryByDest(destId));
+        return result;
+    }
+    /**
+     * 
+     * service:服务推荐. <br/>  
+     *  
+     * @author snow.zhang  
+     * @param userId
+     * @param multiprice
+     * @param apiSign
+     * @param apiKey
+     * @param multilang
+     * @return
+     * @throws ZZKServiceException  
+     * @since JDK 1.7
+     */
+    @RequestMapping(value = "service", method = RequestMethod.GET)
+    @ResponseBody
+    @SignValid
+    public ResponseResult service(@RequestParam(value="destId",required=false) String destId,@RequestParam(value="userId",required=false) Integer userId,
+    @RequestParam(value="searchid",required=false) String searchid,@RequestParam(value="searchType",required=false) SearchType searchType,
+    @RequestParam(value="serviceType",required=false) BNBServiceType serviceType, @RequestParam(value="page",required=true) String page,
+    @RequestParam("multiprice") Integer multiprice,@RequestParam("apiSign") String apiSign,@RequestParam("apiKey") String apiKey,@RequestParam("multilang") Integer multilang ) throws ZZKServiceException {
+        ServiceSearchVo searchVo = new ServiceSearchVo();
+        Pattern pattern = Pattern.compile("[0-9]*");
+        searchVo.setChannel(ChannelType.APP);
+        searchVo.setUserId(userId);
+        searchVo.setMultiprice(multiprice);
+        if(userId!=null){
+            searchVo.setUserId(userId);
+        }
+        if (!pattern.matcher(page).matches()) {
+            throw new IllegalParamterException("page type error");
+        }
+        searchVo.setPage(Integer.parseInt(page));
+        ResponseResult result = new ResponseResult();
+        result.setInfo(userSolrService.serviceRecommend(searchVo));
         return result;
     }
 }
