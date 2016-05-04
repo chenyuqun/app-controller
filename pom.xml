@@ -25,7 +25,7 @@
 		<maven.surefire.version>2.12</maven.surefire.version>
 		<maven.findbugs.version>2.5.2</maven.findbugs.version>
 
-		<zizaike.core.version>1.0.6-RELEASE</zizaike.core.version>
+		<zizaike.core.version>1.0.7-SNAPSHOT</zizaike.core.version>
 		<zizaike.entity.version>1.0.15-RELEASE</zizaike.entity.version>
 		<zizaike.is.version>1.0.15-RELEASE</zizaike.is.version>
 		<!-- Spring -->
