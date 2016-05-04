@@ -74,7 +74,10 @@ public class SignAdivce {
         Object[] args = joinPoint.getArgs();
         MethodSignature methodName = (MethodSignature) joinPoint.getSignature();
         Method method = methodName.getMethod();
-        String[] ingore = method.getAnnotation(SignValid.class).ingore();
+        String[] ingore= {};
+        if(method.getAnnotation(SignValid.class)!=null){
+            ingore =method.getAnnotation(SignValid.class).ingore();
+        }
         List<String> ingoreList = Arrays.asList(ingoreProperties);
         List<String> ingoreListRequest =  Arrays.asList(ingore);
         //忽略默认值
