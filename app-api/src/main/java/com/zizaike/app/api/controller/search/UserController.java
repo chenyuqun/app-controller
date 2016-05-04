@@ -51,6 +51,7 @@ public class UserController extends BaseAjaxController {
     }
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
+    @SignValid()
     public ResponseResult getServiceSearch(@RequestParam(value="destId",required=true) String destId,@RequestParam(value="userId",required=false) Integer userId,
             @RequestParam(value="searchid",required=true) String searchid,@RequestParam(value="searchType",required=false) SearchType searchType,
             @RequestParam(value="serviceType",required=true) BNBServiceType serviceType, @RequestParam(value="page",required=false) String page,
